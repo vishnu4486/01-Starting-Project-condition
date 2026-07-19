@@ -9,16 +9,16 @@ on:
         default: dist
         type: string
     outputs:
-        result:
-            description: result of the deploment oprection 
-            value: ${{jobs.deploy.outputs.outcome}}
-
+      result:
+        description: Result of the deployment operation
+        value: ${{ jobs.deploy.outputs.outcome }}
 
 jobs:
   deploy:
-    outputs:
-        outcome: ${{steps.set-results.outputs.step-result}}
     runs-on: ubuntu-latest
+    outputs:
+      outcome: ${{ steps.set-results.outputs.step-result }}
+
     steps:
       - name: Get code
         uses: actions/checkout@v5
@@ -33,5 +33,7 @@ jobs:
 
       - name: Output information
         run: echo "Deploying & uploading..."
+
       - name: Set result output
-        run: echo "::set-output name=steps-result:: success"
+        id: set-results
+        run: echo "step-result=success" >> "$GITHUB_OUTPUT"
